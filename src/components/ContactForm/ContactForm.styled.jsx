@@ -62,10 +62,3 @@ export const Button = styled.button`
     outline: none;
   }
 `;
-
-export const Message = styled.p`
-  font-size: 14px;
-  color: #905f8b;
-  margin-top: 10px;
-  padding-left: 5px;
-`;

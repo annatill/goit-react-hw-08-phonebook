@@ -6,22 +6,16 @@ import {
   Input,
   Label,
   Button,
-  Message,
 } from './ContactForm.styled.jsx';
+import { showErrorToast } from '../../functionError/showErrorToast.js';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { addContact } from 'redux/operations.js';
-import { getContacts } from 'redux/selectors.js';
-
-const FormError = ({ message }) => {
-  return <Message>{message}</Message>;
-};
+import { addContact } from 'redux/contacts/operations.js';
+import { getContacts } from 'redux/contacts/selectors.js';
 
 export const ContactForm = () => {
   const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
-  const [nameError, setNameError] = useState(null);
-  const [phoneError, setPhoneError] = useState(null);
+  const [number, setNumber] = useState('');
 
   const nameInputId = nanoid();
   const telInputId = nanoid();
@@ -35,12 +29,10 @@ export const ContactForm = () => {
     switch (name) {
       case 'name':
         setName(value);
-        setNameError(null);
         break;
 
-      case 'phone':
-        setPhone(value);
-        setPhoneError(null);
+      case 'number':
+        setNumber(value);
         break;
 
       default:
@@ -51,37 +43,37 @@ export const ContactForm = () => {
   const handleSubmit = event => {
     event.preventDefault();
 
-    if (!name || !phone) {
-      setNameError('Please fill in all fields');
+    if (!name || !number) {
+      showErrorToast('Please fill in all fields');
       return;
     }
 
     const isValidName = /^[\p{L}\s]+$/u;
     if (!isValidName.test(name)) {
-      setNameError('Please enter a valid name');
+      showErrorToast('Please enter a valid name');
       return;
     }
 
     const isValidPhone = /^[0-9\s-]+$/;
-    if (!isValidPhone.test(phone)) {
-      setPhoneError('Please enter a valid phone number');
+    if (!isValidPhone.test(number)) {
+      showErrorToast('Please enter a valid phone number');
       return;
     }
 
     const isContactExistName = isContactExist(name);
     if (isContactExistName) {
-      setNameError('Already exists!');
+      showErrorToast('Already exists!');
       return;
     }
 
-    dispatch(addContact({ name, phone }));
+    dispatch(addContact({ name, number }));
     reset();
     submitButton.current.focus();
   };
 
   const reset = () => {
     setName('');
-    setPhone('');
+    setNumber('');
   };
 
   const isContactExist = name => {
@@ -106,7 +98,6 @@ export const ContactForm = () => {
             onChange={handleChange}
           />
         </Label>
-        <>{nameError && <FormError name="name" message={nameError} />}</>
       </ContainerInput>
       <ContainerInput>
         <Label htmlFor={telInputId}>
@@ -114,14 +105,13 @@ export const ContactForm = () => {
           <Input
             className="input"
             type="tel"
-            name="phone"
+            name="number"
             placeholder="Enter phone number"
             id={telInputId}
-            value={phone}
+            value={number}
             onChange={handleChange}
           />
         </Label>
-        <>{phoneError && <FormError name="phone" message={phoneError} />}</>
       </ContainerInput>
       <Button type="submit" ref={submitButton}>
         Add contact

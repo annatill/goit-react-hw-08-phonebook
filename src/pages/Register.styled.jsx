@@ -7,20 +7,8 @@ export const Container = styled.div`
   margin-top: 40px;
   text-align: -webkit-center;
   color: #f7ece1;
-  background-color: #242038;
   padding: 30px;
-  width: 800px;
-  min-height: 100vh;
+  width: 400px;
+  min-height: 68vh;
   border-radius: 10px;
-`;
-
-export const Title = styled.h1`
-  font-size: 35px;
-  font-weight: 700;
-`;
-
-export const TitleSection = styled.h2`
-  font-size: 25px;
-  font-weight: 600;
-  text-align: start;
 `;
